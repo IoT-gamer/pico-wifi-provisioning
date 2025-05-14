@@ -1,0 +1,26 @@
+{
+  "name": "pico-wifi-provisioning",
+  "version": "1.0.0",
+  "description": "Library for securely provisioning WiFi credentials to Raspberry Pi Pico W devices over BLE",
+  "keywords": "wifi, provision, ble, bluetooth, pico, raspberry pi pico, security",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IoT-gamer/pico-wifi-provisioning.git"
+  },
+  "authors": [
+    {
+      "name": "Sean P. Leary",
+      "email": "sunrecorder1@gmail.com",
+      "maintainer": true
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ToT-gamer/pico-wifi-provisioning",
+  "dependencies": {
+    "pico-ble-secure": "^1.1.0",
+    "pico-ble-notify": "^1.0.1",
+    "bblanchon/ArduinoJson": "^7.4.1"
+  },
+  "frameworks": "arduino",
+  "platforms": "raspberrypi"
+}
