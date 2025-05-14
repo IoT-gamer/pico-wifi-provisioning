@@ -45,9 +45,6 @@ lib_deps =
     ; pico-wifi-provisioning
     ; Otherwise, use repo URL:
     https://github.com/IoT-gamer/pico-wifi-provisioning
-    pico-ble-secure ; remove if published to PlatformIO registry
-    pico-ble-notify ; remove if published to PlatformIO registry
-    bblanchon/ArduinoJson ;remove if published to PlatformIO registry
 ```
 
 ## Example Project
