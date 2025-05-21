@@ -462,7 +462,7 @@ int PicoWiFiProvisioningClass::handleGattWrite(uint16_t characteristic_id, uint8
             { // Notifications enabled
                 BLENotify.handleSubscriptionChange(_pairingStatusCharHandle, true);
                 Serial.println("Pairing status notifications enabled by client");
-                bool isPaired = (_connectedDevice && BLESecure.getPairingStatus() == PAIRING_COMPLETE && BLESecure.isEncrypted(_connectedDevice));
+                bool isPaired = (_connectedDevice && BLESecure.getPairingStatus() == PAIRING_COMPLETE);
                 updatePairingStatusCharacteristic(isPaired); // Send current status
             }
             else if (cccd_value == 0x0000)
@@ -508,7 +508,7 @@ uint16_t PicoWiFiProvisioningClass::handleGattRead(uint16_t characteristic_id, u
         uint8_t pairingStatusValue = PAIRING_STATUS_NOT_PAIRED; // Default to not paired
 
         // Check current pairing status with the connected device
-        if (_connectedDevice && BLESecure.getPairingStatus() == PAIRING_COMPLETE && BLESecure.isEncrypted(_connectedDevice))
+        if (_connectedDevice && BLESecure.getPairingStatus() == PAIRING_COMPLETE)
         {
             pairingStatusValue = PAIRING_STATUS_PAIRED; //
         }

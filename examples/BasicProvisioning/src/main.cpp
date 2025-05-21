@@ -7,7 +7,8 @@
  * - Slow blink: connected to BLE client
  * - Fast blink: connecting to WiFi
  * - Solid on: connected to WiFi
- * It also implements BOOTSEL button functionality to clear WiFi networks and restart provisioning.
+ * It also implements BOOTSEL button functionality to clear WiFi networks.
+ * RESET (short pin RUN to GND) will reinitialize the WiFi provisioning.
  *
  * For Raspberry Pi Pico W with arduino-pico core.
  */
@@ -40,8 +41,8 @@ bool wifiConnected = false;
 // Flag to track if we're paired with a BLE device
 bool blePaired = false;
 
-// Flag to trigger a full reset on next loop iteration
-bool needFullReset = false;
+// Flag to trigger a reset on next loop iteration
+bool needReset = false;
 
 // Function to update LED based on currentLedState
 void updateLed()
@@ -246,7 +247,8 @@ void setup()
     }
   }
 
-  Serial.println("Press BOOTSEL button to clear all WiFi networks and restart provisioning");
+  Serial.println("Press BOOTSEL button to clear all WiFi networks");
+  Serial.println("RESET (short pin RUN to GND) to reinitialize WiFi provisioning");
 }
 
 void loop()
@@ -254,10 +256,10 @@ void loop()
   // Process WiFi and BLE events
   PicoWiFiProvisioning.loop();
 
-  // Check if we need to perform a full reset after BOOTSEL was pressed
-  if (needFullReset)
+  // Check if we need to perform a reset after BOOTSEL was pressed
+  if (needReset)
   {
-    needFullReset = false;
+    needReset = false;
 
     Serial.println("Performing full reset and reinitialization...");
 
@@ -273,10 +275,8 @@ void loop()
     bool cleared = PicoWiFiProvisioning.clearNetworks();
     Serial.println(cleared ? "Networks cleared successfully" : "Failed to clear networks");
 
-    // Reset pairing status
-    blePaired = false;
-    //  digitalWrite(PAIRING_LED_PIN, LOW);
-
+    Serial.println("RESET pico (short RUN pin to GND) to reinitialize WiFi provisioning");
+  
     // Blink LED to signal reset
     for (int i = 0; i < 5; i++)
     {
@@ -284,25 +284,6 @@ void loop()
       delay(100);
       digitalWrite(LED_PIN, LOW);
       delay(100);
-    }
-
-    // Since the CYW43 chip needs a complete restart, we'll do a full restart
-    // of the BLE stack with sufficient delays
-    Serial.println("Restarting BLE service...");
-
-    // Stop existing BLE operations
-    BTstack.stopAdvertising();
-    delay(2000); // Longer delay to ensure chip is ready
-
-    // Then restart the provisioning service
-    if (startProvisioning())
-    {
-      Serial.println("WiFi provisioning service restarted");
-      Serial.println("Ready for new BLE provisioning");
-    }
-    else
-    {
-      Serial.println("Failed to restart WiFi provisioning service");
     }
   }
 
@@ -319,10 +300,10 @@ void loop()
     {
       buttonPressed = true;
       lastButtonPressTime = currentTime;
-      Serial.println("BOOTSEL pressed: triggering full reset");
+      Serial.println("BOOTSEL pressed: disconnecting WiFi and clearing networks");
 
-      // Set the flag for full reset on next loop iteration
-      needFullReset = true;
+      // Set the flag for reset on next loop iteration
+      needReset = true;
     }
 
     // Wait for button release to avoid multiple triggers
