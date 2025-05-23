@@ -222,7 +222,9 @@ The library supports different IO capabilities through the BLESecure library:
 
 ## Mobile Applications
 
-**TODO:** Create a mobile application example for Android/iOS to facilitate the provisioning process.
+### Example Flutter App
+A simple Flutter app is available to demonstrate the provisioning process. It allows you to connect to the Pico W device and send WiFi credentials securely.
+- [pico_wifi_provisioning_flutter_app](https://github.com/IoT-gamer/pico_wifi_provisioning_flutter_app)
 
 ## Troubleshooting
 
