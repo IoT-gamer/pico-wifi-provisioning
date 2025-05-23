@@ -232,6 +232,13 @@ A simple Flutter app is available to demonstrate the provisioning process. It al
 - **WiFi connection failures**: Check the SSID and password being sent. Ensure they're valid and within length limits.
 - **Flash storage issues**: Make sure LittleFS is properly initialized and has enough space.
 - **BLE pairing issues**: Any time bonding information is lost on either the peripheral or central device, re-encryption will fail, and the bond must be reestablished.
+  - For example, if the peripheral device (Pico W) flash is erased, the bond information will also be lost. And the central device (e.g., a mobile phone) will need to unpair (in settings/Bluetooth) and re-pair with the Pico W.
+  - example error message:
+  ```
+  Re-encryption failed, status: 61
+  BLE pairing failed (via onPairingStatusChange)
+  Pairing failed, status: 61, reason: 0
+  ```
 
 ## License
 
