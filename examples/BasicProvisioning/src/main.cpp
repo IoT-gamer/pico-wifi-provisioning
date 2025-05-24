@@ -174,15 +174,19 @@ void onProvisionStatus(PicoWiFiProvisioningStatus status)
 // Callback for pairing status changes - implements visual feedback
 void onPairingStatus(BLEPairingStatus status, BLEDevice *device)
 {
+  bool currentPairingStatusForCharacteristic = false; // To inform the library
+
   if (status == PAIRING_COMPLETE)
   {
     Serial.println("BLE pairing complete, ready for WiFi provisioning");
     blePaired = true;
+    currentPairingStatusForCharacteristic = true;
   }
   else if (status == PAIRING_FAILED)
   {
     Serial.println("BLE pairing failed");
     blePaired = false;
+    currentPairingStatusForCharacteristic = false;
   }
   else if (status == PAIRING_STARTED)
   {
@@ -191,7 +195,12 @@ void onPairingStatus(BLEPairingStatus status, BLEDevice *device)
   else if (status == PAIRING_IDLE)
   {
     blePaired = false;
+    currentPairingStatusForCharacteristic = false;
   }
+
+  // IMPORTANT: Notify the PicoWiFiProvisioning library to update its characteristic
+  PicoWiFiProvisioning.updatePairingStatusCharacteristic(currentPairingStatusForCharacteristic); 
+
 }
 
 // Function to initialize the WiFi provisioning

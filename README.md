@@ -236,7 +236,7 @@ A simple Flutter app is available to demonstrate the provisioning process. It al
   - example error message:
   ```
   Re-encryption failed, status: 61
-  BLE pairing failed (via onPairingStatusChange)
+  BLE pairing failed
   Pairing failed, status: 61, reason: 0
   ```
 

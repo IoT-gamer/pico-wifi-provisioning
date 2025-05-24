@@ -23,8 +23,6 @@ void bleDeviceDisconnected(BLEDevice *device);
 int gattWriteCallback(uint16_t characteristic_id, uint8_t *buffer, uint16_t buffer_size);
 uint16_t gattReadCallback(uint16_t characteristic_id, uint8_t *buffer, uint16_t buffer_size);
 
-void onPairingStatusChange(BLEPairingStatus status, BLEDevice *device); // For BLESecure callback
-
 // Constructor
 PicoWiFiProvisioningClass::PicoWiFiProvisioningClass() : _status(PROVISION_IDLE),
                                                          _networkCount(0),
@@ -57,24 +55,6 @@ PicoWiFiProvisioningClass::PicoWiFiProvisioningClass() : _status(PROVISION_IDLE)
     }
 }
 
-// Global callback for pairing status updates from BLESecure
-void onPairingStatusChange(BLEPairingStatus status, BLEDevice *device)
-{
-    // This callback is registered with BLESecure.
-    // PicoWiFiProvisioning's own updatePairingStatusCharacteristic can be called
-    // by BLESecure's callback handler in main.cpp or here if preferred.
-    if (status == PAIRING_COMPLETE)
-    {
-        Serial.println("BLE pairing complete, ready for WiFi provisioning (via onPairingStatusChange)");
-        PicoWiFiProvisioning.updatePairingStatusCharacteristic(true);
-    }
-    else if (status == PAIRING_FAILED)
-    {
-        Serial.println("BLE pairing failed (via onPairingStatusChange)");
-        PicoWiFiProvisioning.updatePairingStatusCharacteristic(false);
-    }
-}
-
 // Initialize the WiFi provisioning service
 bool PicoWiFiProvisioningClass::begin(const char *deviceName, BLESecurityLevel securityLevel, io_capability_t ioCapability)
 {
@@ -95,7 +75,6 @@ bool PicoWiFiProvisioningClass::begin(const char *deviceName, BLESecurityLevel s
     BTstack.setGATTCharacteristicWrite(gattWriteCallback);
     BTstack.setGATTCharacteristicRead(gattReadCallback);
     setupBLEService();
-    BLESecure.setPairingStatusCallback(onPairingStatusChange); // Use the global onPairingStatusChange
     BTstack.startAdvertising();
     Serial.println("WiFi Provisioning service started");
     return true;
