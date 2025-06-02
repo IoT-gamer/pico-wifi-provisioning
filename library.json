@@ -17,10 +17,34 @@
   "license": "MIT",
   "homepage": "https://github.com/ToT-gamer/pico-wifi-provisioning",
   "dependencies": {
-    "pico-ble-secure": "^1.1.0",
+    "pico-ble-secure": "^1.2.0",
     "pico-ble-notify": "^1.0.1",
     "bblanchon/ArduinoJson": "^7.4.1"
   },
   "frameworks": "arduino",
-  "platforms": "raspberrypi"
-}
+  "platforms": "raspberrypi",
+    "examples": [
+      {
+        "name": "BasicProvisioning",
+        "base": "examples/BasicProvisioning",
+        "files": [
+          "src/main.cpp"
+        ]
+      }
+    ],
+    "export": {
+        "exclude": [
+          "examples/BasicProvisioning/.pio",
+          "examples/BasicProvisioning/.vscode/.browse.c_cpp.db*",
+          "examples/BasicProvisioning/.vscode/c_cpp_properties.json",
+          "examples/BasicProvisioning/.vscode/launch.json",
+          "examples/BasicProvisioning/.vscode/ipch",
+          "examples/BasicProvisioning/logs/",
+          ".git",
+          ".github",
+          "*.sh",
+          "*.yml",
+          "*.tar.gz"
+        ]
+      }
+  }

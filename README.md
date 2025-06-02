@@ -1,10 +1,6 @@
 # Pico WiFi Provisioning
 
-[![Work in Progress](https://img.shields.io/badge/status-work%20in%20progress-yellow)](https://example.com/your-project-status-page)
-
 A PlatformIO library for securely provisioning WiFi credentials to Raspberry Pi Pico W boards with over BLE (Bluetooth Low Energy).
-
-**TODO:** publish to PlatformIO registry
 
 ## Overview
 
@@ -17,7 +13,6 @@ This library provides a simple and secure way to provision WiFi credentials to a
 - **Credential Storage:** Saves WiFi network configurations to LittleFS flash memory.
 - **Automatic Connection:** Attempts to connect to stored networks on startup.
 - **Status Callbacks:** Provides callbacks to monitor the provisioning process, WiFi status, and BLE connection state.
-
 
 ## Compatibility
 
@@ -41,10 +36,7 @@ This library provides a simple and secure way to provision WiFi credentials to a
 
 ```ini
 lib_deps =
-    ; If published to PlatformIO registry:
-    ; pico-wifi-provisioning
-    ; Otherwise, use repo URL:
-    https://github.com/IoT-gamer/pico-wifi-provisioning
+    pico-wifi-provisioning
 ```
 
 ## Example Project
