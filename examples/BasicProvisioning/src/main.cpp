@@ -3,10 +3,12 @@
  *
  * This example demonstrates how to use the PicoWiFiProvisioning library to receive
  * WiFi credentials securely over BLE and connect to a WiFi network.
- * In uses the onboard LED for visual feedback:
- * - Slow blink: connected to BLE client
+ * It uses the onboard LED for visual feedback of the wifi provisioning state:
  * - Fast blink: connecting to WiFi
  * - Solid on: connected to WiFi
+ * It uses optional GPIO BLE LED to indicate BLE connection state:
+ * - On: BLE connected
+ * - Off: BLE disconnected
  * It also implements BOOTSEL button functionality to clear WiFi networks.
  * RESET (short pin RUN to GND) will reinitialize the WiFi provisioning.
  *
@@ -20,7 +22,10 @@
 #include <BLENotify.h>
 #include "PicoWiFiProvisioning.h"
 
-// Onboard LED used for visual feedback
+// Optional GPIO pin used to indicate BLE connection state with an LED
+const int BLE_LED_PIN = 16; 
+
+// Onboard LED used for visual feedback of the wifi provisioning state
 const int LED_PIN = LED_BUILTIN;
 const int SLOW_BLINK_MS = 1000;
 const int FAST_BLINK_MS = 500;
@@ -89,14 +94,16 @@ void handleBleConnectionChange(bool isConnected)
   {
     if (PicoWiFiProvisioning.getStatus() == PROVISION_IDLE && !wifiConnected) 
     {
-      currentLedState = LED_SLOW_BLINK; 
+      currentLedState = LED_OFF;
+      // turn on BLE LED
+      digitalWrite(BLE_LED_PIN, HIGH);
     }
   }
   else // BLE Disconnected
   {
-    if (currentLedState == LED_SLOW_BLINK && PicoWiFiProvisioning.getStatus() == PROVISION_IDLE && !wifiConnected) {
       currentLedState = LED_OFF;
-    }
+      // turn off BLE LED
+      digitalWrite(BLE_LED_PIN, LOW);
   }
 }
 
@@ -231,6 +238,8 @@ void setup()
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, LOW);
   currentLedState = LED_OFF;
+  pinMode(BLE_LED_PIN, OUTPUT);
+  digitalWrite(BLE_LED_PIN, LOW);
 
   // Set callbacks before initialization
   PicoWiFiProvisioning.setBLEConnectionStateCallback(handleBleConnectionChange);

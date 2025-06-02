@@ -51,19 +51,20 @@ lib_deps =
 
 Check out the [BasicProvisioning](/examples/BasicProvisioning) example for a complete implementation including:
 
-- LED status indication
-  - Slow blink: connected to BLE client/central
+- Onbard LED status indication
   - Fast blink: connecting to WiFi
   - Solid on: connected to WiFi
+- GPIO LED for BLE status indication
 - BOOTSEL button handling for network reset
 - BLE pairing with encryption and feedback
 - WiFi connection management
 
 ### Notes
-- Onboard LED may stop blinking for a fews seconds after sending wifi credentials
-  due to some internal limitations (use LCD/OLED for better feedback)
+- Need to connect to Serial Monitor
 - Pairing on android may show duplicate requests (click both)
 - Pairing request will timout quickly
+- BLE will dosconnect after receiving WiFi credentials
+- May take a few seconds to connect to WiFi after provisioning
 
 ## Usage
 
